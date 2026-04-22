@@ -5,7 +5,7 @@ using BCrypt.Net;
 
 namespace StarterApp.Services;
 
-public class AuthenticationService : IAuthenticationService
+public class LocalAuthenticationService : IAuthenticationService
 {
     private readonly AppDbContext _context;
     private User? _currentUser;
@@ -13,7 +13,7 @@ public class AuthenticationService : IAuthenticationService
 
     public event EventHandler<bool>? AuthenticationStateChanged;
 
-    public AuthenticationService(AppDbContext context)
+    public LocalAuthenticationService(AppDbContext context)
     {
         _context = context;
     }
@@ -127,6 +127,21 @@ public class AuthenticationService : IAuthenticationService
     public bool HasAllRoles(params string[] roleNames)
     {
         return roleNames.All(role => HasRole(role));
+    }
+
+    public Task<string?> GetValidAccessTokenAsync()
+    {
+        return Task.FromResult<string?>(null);
+    }
+
+    public Task<bool> TryRestoreSessionAsync()
+    {
+        return Task.FromResult(false);
+    }
+
+    public Task<bool> IsAuthenticatedAsync()
+    {
+        return Task.FromResult(IsAuthenticated);
     }
 
     public async Task<bool> ChangePasswordAsync(string currentPassword, string newPassword)

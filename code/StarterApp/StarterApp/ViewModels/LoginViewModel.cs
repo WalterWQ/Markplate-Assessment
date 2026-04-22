@@ -71,7 +71,7 @@ public partial class LoginViewModel : BaseViewModel
 
         if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
         {
-            SetError("Please enter both email and password");
+            SetError("Please enter both ");
             return;
         }
 
@@ -88,7 +88,7 @@ public partial class LoginViewModel : BaseViewModel
             }
             else
             {
-                await _navigationService.NavigateToAsync("MainPage");
+                SetError(result.Message);
             }
         }
         catch (Exception ex)

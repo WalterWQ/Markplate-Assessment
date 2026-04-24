@@ -51,9 +51,7 @@ public class ApiAuthenticationService : IAuthenticationService
 
             await SaveTokenAsync(token.Token, token.RefreshToken, token.ExpiresAt);
 
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token.Token);
-
+            await PrepareAuthenticatedRequest();
             var meResponse = await _httpClient.GetAsync("users/me");
 
             if (!meResponse.IsSuccessStatusCode)
@@ -216,6 +214,7 @@ public class ApiAuthenticationService : IAuthenticationService
         _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
 
+        await PrepareAuthenticatedRequest();
         var meResponse = await _httpClient.GetAsync("users/me");
 
         System.Diagnostics.Debug.WriteLine($"Me endpoint response during session restore: {(int)meResponse.StatusCode}");
@@ -277,6 +276,18 @@ public class ApiAuthenticationService : IAuthenticationService
         SecureStorage.Default.Remove(refreshTokenKey);
         SecureStorage.Default.Remove(expiryKey);
         return Task.CompletedTask;
+    }
+
+    private async Task PrepareAuthenticatedRequest()
+    {
+        var token = await GetValidAccessTokenAsync();
+
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+        }
+
     }
 
     public async Task LogoutAsync()

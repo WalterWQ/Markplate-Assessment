@@ -9,6 +9,10 @@ public interface IAuthenticationService
     bool IsAuthenticated { get; }
     User? CurrentUser { get; }
     List<string> CurrentUserRoles { get; }
+
+    Task<string?> GetValidAccessTokenAsync();
+    Task<bool> TryRestoreSessionAsync();
+    Task<bool> IsAuthenticatedAsync();
     
     Task<AuthenticationResult> LoginAsync(string email, string password);
     Task<AuthenticationResult> RegisterAsync(string firstName, string lastName, string email, string password);

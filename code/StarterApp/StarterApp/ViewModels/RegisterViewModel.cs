@@ -123,6 +123,8 @@ public partial class RegisterViewModel : BaseViewModel
     /// @details Checks all registration requirements and sets appropriate error messages
     private bool ValidateForm()
     {
+        var passwordValidationError = GetPasswordValidationError(Password);
+
         if (string.IsNullOrWhiteSpace(FirstName))
         {
             SetError("First name is required");
@@ -153,9 +155,9 @@ public partial class RegisterViewModel : BaseViewModel
             return false;
         }
 
-        if (Password.Length < 6)
+        if (passwordValidationError is not null)
         {
-            SetError("Password must be at least 6 characters long");
+            SetError(passwordValidationError);
             return false;
         }
 
@@ -182,5 +184,45 @@ public partial class RegisterViewModel : BaseViewModel
     {
         const string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         return Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase);
+    }
+
+    /// @brief Validates the passwords to ensure it meeets the APIs password requirements
+    /// @param Password the password to validate
+    /// @return True is the password is valid and meets requirements, false otherwise
+    /// @details checks the minimum length, uppercase, lowercase, number and special character requirements
+    private static bool IsValidPassword(string passowrd)
+    {
+        if (string.IsNullOrWhiteSpace(passowrd))
+            return false;
+
+        const string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$";
+        return Regex.IsMatch(passowrd, passwordPattern);
+    }
+
+    /// @brief Gets the password validation error message if the password doesent meet requirements
+    /// @param Password the password to validate
+    /// @return An error message if the password if invalid, or null if the password is valid
+    /// @details Validates password rules individually to provide a more indepth error message to help the user
+    private static string? GetPasswordValidationError(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+            return "Password is required";
+
+        if (password.Length < 8)
+            return "Password must be at least 8 characters long";
+
+        if (!Regex.IsMatch(password, @"[A-Z]"))
+            return "Password must contain at least one uppercase letter";
+
+        if (!Regex.IsMatch(password, @"[a-z]"))
+            return "Password must contain at least one lowercase letter";
+
+        if (!Regex.IsMatch(password, @"\d"))
+            return "Password must contain at least one number";
+
+        if (!Regex.IsMatch(password, @"[^\w\s]"))
+            return "Password must contain at least one special character";
+
+        return null;
     }
 }

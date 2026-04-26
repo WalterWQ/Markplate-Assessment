@@ -1,8 +1,9 @@
 using Microsoft.Extensions.Logging;
-using StarterApp.ViewModels;
 using StarterApp.Database.Data;
-using StarterApp.Views;
+using StarterApp.Database.Data.Repositories;
 using StarterApp.Services;
+using StarterApp.ViewModels;
+using StarterApp.Views;
 
 namespace StarterApp;
 
@@ -21,6 +22,8 @@ public static class MauiProgram
 
         const bool useSharedApi = true;
 
+        builder.Services.AddDbContext<AppDbContext>();
+
         if (useSharedApi)
         {
             var httpClient = new HttpClient
@@ -29,11 +32,16 @@ public static class MauiProgram
             };
 
             builder.Services.AddSingleton(httpClient);
-            builder.Services.AddSingleton<IAuthenticationService, ApiAuthenticationService>();
+            builder.Services.AddSingleton<ApiService>();
+
+            builder.Services.AddSingleton<IApiService>(sp =>
+                sp.GetRequiredService<ApiService>());
+
+            builder.Services.AddSingleton<IAuthenticationService>(sp =>
+                sp.GetRequiredService<ApiService>());
         }
         else
         {
-            builder.Services.AddDbContext<AppDbContext>();
             builder.Services.AddSingleton<IAuthenticationService, LocalAuthenticationService>();
         }
 
@@ -42,6 +50,12 @@ public static class MauiProgram
         builder.Services.AddSingleton<AppShellViewModel>();
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<App>();
+
+        builder.Services.AddTransient<ItemsListViewModel>();
+        builder.Services.AddTransient<ItemsListPage>();
+
+        builder.Services.AddTransient<ItemDetailViewModel>();
+        builder.Services.AddTransient<ItemDetailPage>();
 
         builder.Services.AddTransient<MainViewModel>();
         builder.Services.AddTransient<MainPage>();

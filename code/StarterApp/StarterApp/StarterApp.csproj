@@ -69,4 +69,13 @@
 	  <ProjectReference Include="../StarterApp.Database/StarterApp.Database.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Views\ItemDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ItemsListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

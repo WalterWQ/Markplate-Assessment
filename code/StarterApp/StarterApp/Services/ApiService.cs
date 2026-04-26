@@ -4,7 +4,7 @@ using StarterApp.Database.Models;
 
 namespace StarterApp.Services;
 
-public class ApiAuthenticationService : IAuthenticationService
+public class ApiService : IApiService, IAuthenticationService
 {
     private readonly HttpClient _httpClient;
     private User? _currentUser;
@@ -20,7 +20,7 @@ public class ApiAuthenticationService : IAuthenticationService
     public User? CurrentUser => _currentUser;
     public List<string> CurrentUserRoles => _currentUserRoles;
 
-    public ApiAuthenticationService(HttpClient httpClient)
+    public ApiService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
@@ -124,7 +124,7 @@ public class ApiAuthenticationService : IAuthenticationService
         }
     }
 
-    private async Task SaveTokenAsync(string accessToken, string refreshToken, DateTime expiresAt)
+    private async Task SaveTokenAsync(string accessToken, string? refreshToken, DateTime expiresAt)
     {
         await SecureStorage.Default.SetAsync(accessTokenKey, accessToken);
 
@@ -312,6 +312,40 @@ public class ApiAuthenticationService : IAuthenticationService
     {
         // Not supported by the shared API
         return Task.FromResult(false);
+    }
+
+    public async Task<T?> GetAsync<T>(string endpoint)
+    {
+        await PrepareAuthenticatedRequest();
+        return await _httpClient.GetFromJsonAsync<T>(endpoint);
+    }
+
+    public async Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest data)
+    {
+        await PrepareAuthenticatedRequest();
+
+        var response = await _httpClient.PostAsJsonAsync(endpoint, data);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<TResponse>();
+    }
+
+    public async Task<TResponse?> PutAsync<TRequest, TResponse>(string endpoint, TRequest data)
+    {
+        await PrepareAuthenticatedRequest();
+
+        var response = await _httpClient.PutAsJsonAsync(endpoint, data);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<TResponse>();
+    }
+
+    public async Task<bool> DeleteAsync(string endpoint)
+    {
+        await PrepareAuthenticatedRequest();
+
+        var response = await _httpClient.DeleteAsync(endpoint);
+        return response.IsSuccessStatusCode;
     }
 
     // --- API response DTOs ---

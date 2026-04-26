@@ -24,6 +24,11 @@ public class AppDbContext : DbContext
             var a = Assembly.GetExecutingAssembly();
             using var stream = a.GetManifestResourceStream("StarterApp.Database.appsettings.json");
 
+            if (stream == null)
+            {
+                throw new InvalidOperationException("Database appsettings.json was not found as an embedded resource.");
+            }
+
             var config = new ConfigurationBuilder()
                 .AddJsonStream(stream)
                 .Build();
@@ -37,6 +42,7 @@ public class AppDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<Item> Items { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

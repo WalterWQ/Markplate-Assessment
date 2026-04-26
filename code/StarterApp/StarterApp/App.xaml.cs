@@ -13,7 +13,10 @@ public partial class App : Application
 		_authenticationService = authenticationService;
 		InitializeComponent();
 
-		Routing.RegisterRoute(nameof(Views.MainPage), typeof(Views.MainPage));
+        Routing.RegisterRoute(nameof(Views.ItemsListPage), typeof(Views.ItemsListPage));
+        Routing.RegisterRoute(nameof(Views.ItemDetailPage), typeof(Views.ItemDetailPage));
+        Routing.RegisterRoute(nameof(Views.CreateItemPage), typeof(Views.CreateItemPage));
+        Routing.RegisterRoute(nameof(Views.MainPage), typeof(Views.MainPage));
 		Routing.RegisterRoute(nameof(Views.LoginPage), typeof(Views.LoginPage));
 		Routing.RegisterRoute(nameof(Views.RegisterPage), typeof(Views.RegisterPage));
 		Routing.RegisterRoute(nameof(Views.UserListPage), typeof(Views.UserListPage));

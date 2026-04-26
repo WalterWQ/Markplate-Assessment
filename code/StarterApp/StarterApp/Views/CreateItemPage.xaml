@@ -1,0 +1,44 @@
+<ContentPage
+    x:Class="StarterApp.Views.CreateItemPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Create Item">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+
+            <Entry Placeholder="Title" Text="{Binding Title}" />
+            <Entry Placeholder="Description" Text="{Binding Description}" />
+
+            <Entry Placeholder="Daily Rate"
+                   Keyboard="Numeric"
+                   Text="{Binding DailyRate}" />
+
+            <Entry Placeholder="Category ID"
+                   Keyboard="Numeric"
+                   Text="{Binding CategoryId}" />
+
+			<Label Text="Tap the map to set item location" />
+
+			<Picker Title="Choose location"
+                SelectedIndexChanged="OnLocationSelected">
+				<Picker.Items>
+					<x:String>Edinburgh Napier Merchiston</x:String>
+					<x:String>Edinburgh City Centre</x:String>
+					<x:String>Glasgow City Centre</x:String>
+				</Picker.Items>
+			</Picker>
+
+			<Label Text="{Binding Latitude, StringFormat='Latitude: {0:F5}'}" />
+			<Label Text="{Binding Longitude, StringFormat='Longitude: {0:F5}'}" />
+
+            <Button Text="Create Item"
+                    Command="{Binding CreateItemCommand}" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"
+                   IsVisible="{Binding HasError}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

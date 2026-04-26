@@ -13,6 +13,9 @@
         <Button Text="Refresh"
                 Command="{Binding LoadItemsCommand}" />
 
+        <Button Text="Create Item"
+                Command="{Binding NavigateToCreateItemCommand}" />
+
         <Label Text="{Binding ErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding HasError}" />

@@ -55,6 +55,14 @@ public partial class ItemsListViewModel : BaseViewModel
         await Shell.Current.GoToAsync($"{nameof(Views.ItemDetailPage)}?itemId={itemId}");
     }
 
+    [RelayCommand]
+    private async Task NavigateToCreateItemAsync()
+    {
+        await Shell.Current.GoToAsync(nameof(Views.CreateItemPage));
+    }
+
+
+
     private class ItemsResponse
     {
         public List<Item> Items { get; set; } = new();

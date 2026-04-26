@@ -51,6 +51,11 @@ public partial class CreateItemViewModel : BaseViewModel
             IsBusy = true;
             ClearError();
 
+            if (!ValidateForm())
+            {
+                return;
+            }
+
             var newItem = new
             {
                 title = Title,
@@ -88,5 +93,64 @@ public partial class CreateItemViewModel : BaseViewModel
         {
             SetError($"Failed to load categories: {ex.Message}");
         }
+    }
+
+    private bool ValidateForm()
+    {
+        if (string.IsNullOrWhiteSpace(Title))
+        {
+            SetError("Title is required.");
+            return false;
+        }
+
+        if (Title.Trim().Length < 5)
+        {
+            SetError("Title must be at least 5 characters long.");
+            return false;
+        }
+
+        if (Title.Trim().Length > 100)
+        {
+            SetError("Title must be less than 100 characters long.");
+            return false;
+        }
+
+        if (Description?.Length > 1000)
+        {
+            SetError("Description must be less than 1000 characters long.");
+            return false;
+        }
+
+        if (DailyRate <= 0)
+        {
+            SetError("Daily rate must be greater than 0.");
+            return false;
+        }
+
+        if (DailyRate > 1000)
+        {
+            SetError("Daily rate must be £1000 or less.");
+            return false;
+        }
+
+        if (SelectedCategory == null)
+        {
+            SetError("Please select a category.");
+            return false;
+        }
+
+        if (Latitude < -90 || Latitude > 90)
+        {
+            SetError("Latitude must be between -90 and 90.");
+            return false;
+        }
+
+        if (Longitude < -180 || Longitude > 180)
+        {
+            SetError("Longitude must be between -180 and 180.");
+            return false;
+        }
+
+        return true;
     }
 }

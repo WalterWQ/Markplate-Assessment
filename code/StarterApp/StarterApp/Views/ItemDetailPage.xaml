@@ -5,30 +5,29 @@
     Title="Item Details">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="12">
+		<VerticalStackLayout Padding="20" Spacing="12">
 
-            <Label Text="{Binding Item.Title}"
-                   FontSize="26"
-                   FontAttributes="Bold" />
+			<Label Text="{Binding Item.Title}"
+				   FontSize="26"
+				   FontAttributes="Bold" />
 
-            <Label Text="{Binding Item.Category}"
-                   FontSize="14" />
+			<Label Text="{Binding Item.Description}"
+				   FontSize="16" />
 
-            <Label Text="{Binding Item.Description}"
-                   FontSize="16" />
+			<Label Text="{Binding Item.DailyRate, StringFormat='Daily rate: £{0:F2}'}"
+				   FontSize="18"
+				   FontAttributes="Bold" />
 
-            <Label Text="{Binding Item.DailyRate, StringFormat='£{0:F2} per day'}"
-                   FontSize="18"
-                   FontAttributes="Bold" />
+			<Label Text="{Binding Item.Category, StringFormat='Category: {0}'}" />
 
-            <Label Text="{Binding Item.OwnerName, StringFormat='Owner: {0}'}" />
+			<Label Text="{Binding Item.Latitude, StringFormat='Latitude: {0:F5}'}" />
 
-            <Label Text="{Binding Item.AverageRating, StringFormat='Rating: {0:F1}'}" />
+			<Label Text="{Binding Item.Longitude, StringFormat='Longitude: {0:F5}'}" />
 
-            <Label Text="{Binding ErrorMessage}"
-                   TextColor="Red"
-                   IsVisible="{Binding HasError}" />
+			<Label Text="{Binding ErrorMessage}"
+				   TextColor="Red"
+				   IsVisible="{Binding HasError}" />
 
-        </VerticalStackLayout>
+		</VerticalStackLayout>
     </ScrollView>
 </ContentPage>

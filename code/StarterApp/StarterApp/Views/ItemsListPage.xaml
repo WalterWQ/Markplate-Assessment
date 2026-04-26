@@ -21,6 +21,11 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="12" Margin="0,6">
+						<Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenItemCommand}"
+                                CommandParameter="{Binding Id}" />
+                        </Border.GestureRecognizers>
                         <VerticalStackLayout Spacing="4">
                             <Label Text="{Binding Title}"
                                    FontSize="18"

@@ -49,6 +49,12 @@ public partial class ItemsListViewModel : BaseViewModel
         }
     }
 
+    [RelayCommand]
+    private async Task OpenItemAsync(int itemId)
+    {
+        await Shell.Current.GoToAsync($"{nameof(Views.ItemDetailPage)}?itemId={itemId}");
+    }
+
     private class ItemsResponse
     {
         public List<Item> Items { get; set; } = new();

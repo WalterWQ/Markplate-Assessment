@@ -35,4 +35,10 @@ public partial class CreateItemPage : ContentPage
                 break;
         }
     }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.LoadCategoriesCommand.ExecuteAsync(null);
+    }
 }

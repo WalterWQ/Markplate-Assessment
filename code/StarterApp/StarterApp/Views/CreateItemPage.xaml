@@ -14,9 +14,10 @@
                    Keyboard="Numeric"
                    Text="{Binding DailyRate}" />
 
-            <Entry Placeholder="Category ID"
-                   Keyboard="Numeric"
-                   Text="{Binding CategoryId}" />
+			<Picker Title="Category"
+                    ItemsSource="{Binding Categories}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding SelectedCategory}" />
 
 			<Label Text="Tap the map to set item location" />
 

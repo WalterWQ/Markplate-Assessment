@@ -13,7 +13,8 @@ public partial class CreateItemViewModel : BaseViewModel
     [ObservableProperty] private string title = "";
     [ObservableProperty] private string description = "";
     [ObservableProperty] private decimal dailyRate;
-    [ObservableProperty] private int categoryId;
+    [ObservableProperty] private CategoryDto? selectedCategory;
+    [ObservableProperty] private List<CategoryDto> categories = new();
     [ObservableProperty] private double latitude;
     [ObservableProperty] private double longitude;
 
@@ -29,6 +30,19 @@ public partial class CreateItemViewModel : BaseViewModel
         Longitude = longitude;
     }
 
+    public class CategoryDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Slug { get; set; } = "";
+        public int ItemCount { get; set; }
+    }
+
+    private class CategoriesResponse
+    {
+        public List<CategoryDto> Categories { get; set; } = new();
+    }
+
     [RelayCommand]
     private async Task CreateItemAsync()
     {
@@ -42,7 +56,7 @@ public partial class CreateItemViewModel : BaseViewModel
                 title = Title,
                 description = Description,
                 dailyRate = DailyRate,
-                categoryId = CategoryId,
+                categoryId = SelectedCategory?.Id ?? 0,
                 latitude = Latitude,
                 longitude = Longitude
             };
@@ -58,6 +72,21 @@ public partial class CreateItemViewModel : BaseViewModel
         finally
         {
             IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadCategoriesAsync()
+    {
+        try
+        {
+            var response = await _apiService.GetAsync<CategoriesResponse>("categories");
+            Categories = response?.Categories ?? new List<CategoryDto>();
+            SelectedCategory = Categories.FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            SetError($"Failed to load categories: {ex.Message}");
         }
     }
 }

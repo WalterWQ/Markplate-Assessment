@@ -30,7 +30,7 @@ public partial class ItemsListViewModel : BaseViewModel
             IsBusy = true;
             ClearError();
 
-            var response = await _apiService.GetAsync<ItemsResponse>("items");
+            var response = await _apiService.GetAsync<ItemsResponse>("items?page=1&pageSize=100");
 
             Items.Clear();
 
@@ -66,5 +66,8 @@ public partial class ItemsListViewModel : BaseViewModel
     private class ItemsResponse
     {
         public List<Item> Items { get; set; } = new();
+        public int Total { get; set; }
+        public int PageSize { get; set; }
+        public int TotalPages { get; set; }
     }
 }

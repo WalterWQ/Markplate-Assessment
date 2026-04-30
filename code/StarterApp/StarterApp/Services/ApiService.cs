@@ -348,6 +348,24 @@ public class ApiService : IApiService, IAuthenticationService
         return response.IsSuccessStatusCode;
     }
 
+    // --- API Json Sync ---
+
+    public async Task<TResponse?> PatchAsync<TRequest, TResponse>(string endpoint, TRequest data)
+    {
+        await PrepareAuthenticatedRequest();
+ 
+        var request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint)
+        {
+            Content = JsonContent.Create(data)
+        };
+
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<TResponse>();
+
+    }
+
     // --- API response DTOs ---
 
     private record TokenResponse(string Token, string? RefreshToken, DateTime ExpiresAt, int UserId);

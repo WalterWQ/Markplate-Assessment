@@ -24,7 +24,11 @@
 
 			<Label Text="{Binding Item.Longitude, StringFormat='Longitude: {0:F5}'}" />
 
-			<Label Text="{Binding ErrorMessage}"
+            <Button Text="Request Rental" Command="{Binding NavigateToRentalsCommand}" />
+            
+            <Button Text="Manage Item" Command="{Binding NavigateToOwnerCommand}" />
+
+            <Label Text="{Binding ErrorMessage}"
 				   TextColor="Red"
 				   IsVisible="{Binding HasError}" />
 

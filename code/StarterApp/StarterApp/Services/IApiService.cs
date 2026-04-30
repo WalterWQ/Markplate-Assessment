@@ -19,6 +19,8 @@ namespace StarterApp.Services
         Task<AuthenticationResult> RegisterAsync(string firstName, string lastName, string email, string password);
         Task LogoutAsync();
 
+        Task<TResponse?> PatchAsync<TRequest, TResponse>(string endpoint, TRequest data);
+
         Task<string?> GetValidAccessTokenAsync();
         Task<bool> IsAuthenticatedAsync();
 

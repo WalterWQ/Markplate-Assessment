@@ -49,4 +49,28 @@ public partial class ItemDetailViewModel : BaseViewModel
             IsBusy = false;
         }
     }
+
+    [RelayCommand]
+    private async Task NavigateToRentalsAsync()
+    {
+        if (Item == null)
+            return;
+
+        try
+        {
+            IsBusy = true;
+            ClearError();
+
+            await Shell.Current.GoToAsync($"{nameof(Views.RentalsPage)}?itemId={Item.Id}");
+        }
+        catch (Exception ex)
+        {
+            SetError($"Failed to load item: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
 }

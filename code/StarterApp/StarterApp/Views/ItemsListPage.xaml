@@ -4,31 +4,39 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Items">
 
-    <VerticalStackLayout Padding="20" Spacing="12">
+    <Grid Padding="20"
+          RowSpacing="12"
+          RowDefinitions="Auto,Auto,Auto,Auto,*">
 
-        <Label Text="Available Items"
+        <Label Grid.Row="0"
+               Text="Available Items"
                FontSize="24"
                FontAttributes="Bold" />
 
-        <Button Text="Refresh"
+        <Button Grid.Row="1"
+                Text="Refresh"
                 Command="{Binding LoadItemsCommand}" />
 
-        <Button Text="Create Item"
+        <Button Grid.Row="2"
+                Text="Create Item"
                 Command="{Binding NavigateToCreateItemCommand}" />
 
-        <Label Text="{Binding ErrorMessage}"
+        <Label Grid.Row="3"
+               Text="{Binding ErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding HasError}" />
 
-        <CollectionView ItemsSource="{Binding Items}">
+        <CollectionView Grid.Row="4"
+                        ItemsSource="{Binding Items}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="12" Margin="0,6">
-						<Border.GestureRecognizers>
+                        <Border.GestureRecognizers>
                             <TapGestureRecognizer
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenItemCommand}"
                                 CommandParameter="{Binding Id}" />
                         </Border.GestureRecognizers>
+
                         <VerticalStackLayout Spacing="4">
                             <Label Text="{Binding Title}"
                                    FontSize="18"
@@ -45,5 +53,5 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

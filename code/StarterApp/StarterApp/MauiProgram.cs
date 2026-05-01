@@ -20,32 +20,24 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        const bool useSharedApi = true;
-
         builder.Services.AddDbContext<AppDbContext>();
 
-        if (useSharedApi)
+        var httpClient = new HttpClient
         {
-            var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri("https://set09102-api.b-davison.workers.dev/")
-            };
+            BaseAddress = new Uri("https://set09102-api.b-davison.workers.dev/")
+        };
 
-            builder.Services.AddSingleton(httpClient);
-            builder.Services.AddSingleton<ApiService>();
+        builder.Services.AddSingleton(httpClient);
+        builder.Services.AddSingleton<ApiService>();
 
-            builder.Services.AddSingleton<IApiService>(sp =>
-                sp.GetRequiredService<ApiService>());
+        builder.Services.AddSingleton<IApiService>(sp =>
+            sp.GetRequiredService<ApiService>());
 
-            builder.Services.AddSingleton<IAuthenticationService>(sp =>
-                sp.GetRequiredService<ApiService>());
-        }
-        else
-        {
-            builder.Services.AddSingleton<IAuthenticationService, LocalAuthenticationService>();
-        }
+        builder.Services.AddSingleton<IAuthenticationService>(sp =>
+            sp.GetRequiredService<ApiService>());
 
         builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddTransient<IRentalService, RentalService>();
 
         builder.Services.AddSingleton<AppShellViewModel>();
         builder.Services.AddSingleton<AppShell>();
@@ -56,6 +48,10 @@ public static class MauiProgram
 
         builder.Services.AddTransient<ItemDetailViewModel>();
         builder.Services.AddTransient<ItemDetailPage>();
+
+        builder.Services.AddTransient<IRentalService, RentalService>();
+        builder.Services.AddTransient<RentalsViewModel>();
+        builder.Services.AddTransient<RentalsPage>();
 
         builder.Services.AddTransient<CreateItemViewModel>();
         builder.Services.AddTransient<CreateItemPage>();

@@ -6,9 +6,27 @@ using System.Collections.ObjectModel;
 
 namespace StarterApp.ViewModels;
 
+[QueryProperty(nameof(ItemId), "itemId")]
+[QueryProperty(nameof(ItemTitle), "itemTitle")]
+[QueryProperty(nameof(DailyRate), "dailyRate")]
 public partial class RentalsViewModel : BaseViewModel
 {
     private readonly IRentalService _rentalService;
+
+    [ObservableProperty]
+    private int itemId;
+
+    [ObservableProperty]
+    private string itemTitle = "";
+
+    [ObservableProperty]
+    private decimal dailyRate;
+
+    [ObservableProperty]
+    private DateTime startDate = DateTime.Today.AddDays(1);
+
+    [ObservableProperty]
+    private DateTime endDate = DateTime.Today.AddDays(2);
 
     [ObservableProperty]
     private ObservableCollection<Rental> incomingRentals = new();
@@ -20,6 +38,50 @@ public partial class RentalsViewModel : BaseViewModel
     {
         _rentalService = rentalService;
         Title = "Rentals";
+    }
+
+    public decimal EstimatedTotal => EndDate > StartDate ? DailyRate * (EndDate - StartDate).Days : 0;
+
+    partial void OnStartDateChanged(DateTime value) => OnPropertyChanged(nameof(EstimatedTotal));
+
+    partial void OnEndDateChanged(DateTime value) => OnPropertyChanged(nameof(EstimatedTotal));
+
+    partial void OnDailyRateChanged(decimal value) => OnPropertyChanged(nameof(EstimatedTotal));
+
+    [RelayCommand]
+    private async Task RequestRentalAsync()
+    {
+        if (ItemId <= 0)
+        {
+            SetError("No item selected.");
+            return;
+        }
+
+        if (EndDate <= StartDate)
+        {
+            SetError("End date must be after start date.");
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+            ClearError();
+
+            await _rentalService.RequestRentalAsync(ItemId, StartDate, EndDate);
+
+            await Shell.Current.DisplayAlert("Success", "Rental request submitted.", "OK");
+
+            await LoadRentalsAsync();
+        }
+        catch (Exception ex)
+        {
+            SetError($"Failed to request rental: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
@@ -53,28 +115,20 @@ public partial class RentalsViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task ApproveRentalAsync(int rentalId)
-    {
+    private async Task ApproveRentalAsync(int rentalId) =>
         await UpdateRentalStatusAsync(rentalId, "Approved");
-    }
 
     [RelayCommand]
-    private async Task RejectRentalAsync(int rentalId)
-    {
+    private async Task RejectRentalAsync(int rentalId) =>
         await UpdateRentalStatusAsync(rentalId, "Rejected");
-    }
 
     [RelayCommand]
-    private async Task CompleteRentalAsync(int rentalId)
-    {
+    private async Task CompleteRentalAsync(int rentalId) =>
         await UpdateRentalStatusAsync(rentalId, "Completed");
-    }
 
     [RelayCommand]
-    private async Task MarkReturnedAsync(int rentalId)
-    {
+    private async Task MarkReturnedAsync(int rentalId) =>
         await UpdateRentalStatusAsync(rentalId, "Returned");
-    }
 
     private async Task UpdateRentalStatusAsync(int rentalId, string status)
     {

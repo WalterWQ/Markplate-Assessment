@@ -39,6 +39,9 @@ namespace StarterApp.Services
         public async Task<List<Rental>> GetOutgoingRentalsAsync()
         {
             var response = await _apiService.GetAsync<RentalsResponse>("rentals/outgoing");
+
+            System.Diagnostics.Debug.WriteLine($"Outgoing count: {response?.Rentals?.Count}");
+
             return response?.Rentals ?? new List<Rental>();
         }
 

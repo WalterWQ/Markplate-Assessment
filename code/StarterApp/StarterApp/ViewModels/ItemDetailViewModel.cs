@@ -61,7 +61,9 @@ public partial class ItemDetailViewModel : BaseViewModel
             IsBusy = true;
             ClearError();
 
-            await Shell.Current.GoToAsync($"{nameof(Views.RentalsPage)}?itemId={Item.Id}");
+            var route = $"{nameof(Views.RentalsPage)}" + $"?itemId={Item.Id}" + $"&itemName={Uri.EscapeDataString(Item.Title)}" + $"&dailyRate={Item.DailyRate}";
+
+            await Shell.Current.GoToAsync(route);
         }
         catch (Exception ex)
         {

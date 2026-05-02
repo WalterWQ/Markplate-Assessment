@@ -25,8 +25,22 @@
 			<Label Text="{Binding Item.Longitude, StringFormat='Longitude: {0:F5}'}" />
 
             <Button Text="Request Rental" Command="{Binding NavigateToRentalsCommand}" />
-            
-            <Button Text="Manage Item" Command="{Binding NavigateToOwnerCommand}" />
+
+            <Button Text="Manage Item" Command="{Binding StartEditingCommand}" IsVisible="{Binding IsOwner}" />
+
+            <VerticalStackLayout IsVisible="{Binding IsEditing}" Spacing="8">
+                <Entry Placeholder="Title" Text="{Binding EditTitle}" />
+                <Editor Placeholder="Description" Text="{Binding EditDescription}" HeightRequest="100" />
+                <Entry Placeholder="Daily Rate" Keyboard="Numeric" Text="{Binding EditDailyRate}" />
+                
+                <HorizontalStackLayout>
+                    <Label Text="Available" VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding EditIsAvailable}" />
+                </HorizontalStackLayout>
+
+                <Button Text="Save Changes"
+            Command="{Binding SaveItemCommand}" />
+            </VerticalStackLayout>
 
             <Label Text="{Binding ErrorMessage}"
 				   TextColor="Red"

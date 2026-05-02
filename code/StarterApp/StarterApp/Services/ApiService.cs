@@ -49,7 +49,7 @@ public class ApiService : IApiService, IAuthenticationService
                 return new AuthenticationResult(false, "Login failed: Invalid token response");
             }
 
-            await SaveTokenAsync(token.Token, token.RefreshToken, token.ExpiresAt);
+            await SaveTokenAsync(token.Token, token.ExpiresAt);
 
             await PrepareAuthenticatedRequest();
             var meResponse = await _httpClient.GetAsync("users/me");
@@ -124,18 +124,9 @@ public class ApiService : IApiService, IAuthenticationService
         }
     }
 
-    private async Task SaveTokenAsync(string accessToken, string? refreshToken, DateTime expiresAt)
+    private async Task SaveTokenAsync(string accessToken, DateTime expiresAt)
     {
         await SecureStorage.Default.SetAsync(accessTokenKey, accessToken);
-
-        if (!string.IsNullOrWhiteSpace(refreshToken))
-        {
-            await SecureStorage.Default.SetAsync(refreshTokenKey, refreshToken);
-        }
-        else
-        {
-            SecureStorage.Default.Remove(refreshTokenKey);
-        }
 
         await SecureStorage.Default.SetAsync(expiryKey, expiresAt.ToString("O"));  
     }
@@ -166,7 +157,7 @@ public class ApiService : IApiService, IAuthenticationService
             return false;
         }
 
-        await SaveTokenAsync(token.Token, token.RefreshToken, token.ExpiresAt);
+        await SaveTokenAsync(token.Token, token.ExpiresAt);
 
         _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", token.Token);
@@ -186,14 +177,8 @@ public class ApiService : IApiService, IAuthenticationService
 
         if(DateTime.UtcNow >= expiry.Value.AddMinutes(-1))
         {
-            var refreshed = await TryRefreshTokenAsync();
-
-            if (!refreshed)
-            {
-                return null;
-            }
-
-            token = await GetStoredAccessTokenAsync();
+            await ClearStoredTokenAsync(); 
+            return null;
         }
 
         return token;
@@ -368,7 +353,7 @@ public class ApiService : IApiService, IAuthenticationService
 
     // --- API response DTOs ---
 
-    private record TokenResponse(string Token, string? RefreshToken, DateTime ExpiresAt, int UserId);
+    private record TokenResponse(string Token, DateTime ExpiresAt, int UserId);
 
     private record UserProfileResponse(
         int Id, string Email, string FirstName, string LastName, DateTime CreatedAt);

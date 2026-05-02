@@ -11,6 +11,7 @@ namespace StarterApp.Database.Models
         public string? Description { get; set; }
         public decimal DailyRate { get; set; }
         public int CategoryId { get; set; }
+        public int OwnerId { get; set; }
         public string Category { get; set; } = string.Empty;
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }

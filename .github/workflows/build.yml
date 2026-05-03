@@ -33,6 +33,11 @@ jobs:
 
       - name: Build
         run: dotnet build ./code/StarterApp/StarterApp.sln --configuration Release --no-restore
-
+        
       - name: Run tests
-        run: dotnet test ./code/StarterApp/StarterApp.sln --configuration Release --no-build --verbosity normal
+        run: dotnet test ./RentalApp.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: '**/coverage.cobertura.xml'

@@ -20,7 +20,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore workloads
-        run: dotnet workload restore ./StarterApp/StarterApp.csproj
+        run: dotnet workload restore .code/StarterApp/StarterApp/StarterApp.csproj
 
       - name: Restore dependencies
         run: dotnet restore ./StarterApp.sln

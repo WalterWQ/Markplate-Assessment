@@ -15,6 +15,8 @@ namespace StarterApp.Database.Models
         public string Category { get; set; } = string.Empty;
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+        public double Distance { get; set; }
+        public double DistanceMiles => Distance * 0.621371;
         public bool IsAvailable { get; set; }
         public double? AverageRating { get; set; }
         public DateTime CreatedAt { get; set; }

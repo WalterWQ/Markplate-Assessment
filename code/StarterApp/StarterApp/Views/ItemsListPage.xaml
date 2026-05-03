@@ -18,10 +18,14 @@
                 Command="{Binding LoadItemsCommand}" />
 
         <Button Grid.Row="2"
+            Text="Find Near Me"
+            Command="{Binding NavigateToNearbyItemsCommand}" />
+
+        <Button Grid.Row="3"
                 Text="Create Item"
                 Command="{Binding NavigateToCreateItemCommand}" />
 
-        <Label Grid.Row="3"
+        <Label Grid.Row="4"
                Text="{Binding ErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding HasError}" />

@@ -11,6 +11,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: JustEnoughMod/DoxygenDeployAction@v1.0.1
+      - uses: JustEnoughMod/DoxygenDeployAction@1.0.1
         with:
           github_token: ${{ secrets.GIT_TOKEN }}

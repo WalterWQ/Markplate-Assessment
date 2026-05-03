@@ -11,6 +11,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: DenverCoder1/doxygen-github-pages-action@v2.0.0
+      - uses: JustEnoughMod/DoxygenDeployAction@v1.0.0
         with:
           github_token: ${{ secrets.GIT_TOKEN }}

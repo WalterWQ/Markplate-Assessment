@@ -29,10 +29,10 @@ jobs:
         run: dotnet build ./code/StarterApp/StarterApp.sln --configuration Release --no-restore
         
       - name: Run tests
-        run: dotnet test ./RentalApp.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+        run: dotnet test ./code/StarterApp/StarterApp.Test/StarterApp.Test.csproj --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           files: '**/coverage.cobertura.xml'
           token: ${{ secrets.CODECOV_TOKEN }}

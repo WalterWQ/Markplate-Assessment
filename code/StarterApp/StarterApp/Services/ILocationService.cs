@@ -4,7 +4,8 @@ using System.Text;
 
 namespace StarterApp.Services
 {
-    interface ILocationService
+    public interface ILocationService
     {
+        Task<Location?> GetCurrentLocationAsync();
     }
 }

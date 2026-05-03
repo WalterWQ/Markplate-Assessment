@@ -1,0 +1,73 @@
+<ContentPage
+    x:Class="StarterApp.Views.NearbyItemsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Nearby Items">
+
+	<Grid Padding="20"
+          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*"
+          RowSpacing="12">
+
+		<Label Grid.Row="0"
+               Text="Nearby Items"
+               FontSize="24"
+               FontAttributes="Bold" />
+
+		<Button Grid.Row="1"
+                Text="Use My Location"
+                Command="{Binding UseCurrentLocationCommand}" />
+
+		<Picker Grid.Row="2"
+                Title="Or choose test location"
+                SelectedIndexChanged="OnLocationSelected">
+			<Picker.Items>
+				<x:String>Edinburgh City Centre</x:String>
+				<x:String>Edinburgh Napier Merchiston</x:String>
+				<x:String>Glasgow City Centre</x:String>
+			</Picker.Items>
+		</Picker>
+
+		<Entry Grid.Row="3"
+               Placeholder="Radius Miles"
+               Keyboard="Numeric"
+               Text="{Binding RadiusMiles}" />
+
+		<Button Grid.Row="4"
+                Text="Find Near Me"
+                Command="{Binding FindNearbyCommand}" />
+
+		<Label Grid.Row="5"
+               Text="{Binding ErrorMessage}"
+               TextColor="Red"
+               IsVisible="{Binding HasError}" />
+
+		<CollectionView Grid.Row="6"
+                        ItemsSource="{Binding Items}">
+			<CollectionView.ItemTemplate>
+				<DataTemplate>
+					<Border Padding="12" Margin="0,6">
+						<Border.GestureRecognizers>
+							<TapGestureRecognizer
+								Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenItemCommand}"
+								CommandParameter="{Binding Id}" />
+						</Border.GestureRecognizers>
+						<VerticalStackLayout Spacing="4">
+							<Label Text="{Binding Title}"
+                                   FontSize="18"
+                                   FontAttributes="Bold" />
+
+							<Label Text="{Binding Description}" />
+
+							<Label Text="{Binding DailyRate, StringFormat='£{0:F2} per day'}" />
+
+							<Label Text="{Binding Category}" />
+
+							<Label Text="{Binding DistanceMiles, StringFormat='Distance: {0:F2} miles'}" />
+						</VerticalStackLayout>
+					</Border>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+
+	</Grid>
+</ContentPage>

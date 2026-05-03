@@ -61,6 +61,12 @@ public partial class ItemsListViewModel : BaseViewModel
         await Shell.Current.GoToAsync(nameof(Views.CreateItemPage));
     }
 
+    [RelayCommand]
+    private async Task NavigateToNearbyItemsAsync()
+    {
+        await Shell.Current.GoToAsync(nameof(Views.NearbyItemsPage));
+    }
+
 
 
     private class ItemsResponse

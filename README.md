@@ -1,4 +1,5 @@
-[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=WalterWQ_Markplate-Assessment)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=WalterWQ_Markplate-Assessment&metric=alert_status&token=aef6e30b916b689a33cc51c6cdb5a4fc4e44c1c8)](https://sonarcloud.io/summary/new_code?id=WalterWQ_Markplate-Assessment)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=WalterWQ_Markplate-Assessment&metric=bugs&token=aef6e30b916b689a33cc51c6cdb5a4fc4e44c1c8)](https://sonarcloud.io/summary/new_code?id=WalterWQ_Markplate-Assessment)
+[![Build & Test](https://github.com/WalterWQ/Markplate-Assessment/actions/workflows/build.yml/badge.svg)](https://github.com/WalterWQ/Markplate-Assessment/actions/workflows/build.yml) <br/>
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=WalterWQ_Markplate-Assessment)<br/>
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=WalterWQ_Markplate-Assessment&metric=alert_status&token=aef6e30b916b689a33cc51c6cdb5a4fc4e44c1c8)](https://sonarcloud.io/summary/new_code?id=WalterWQ_Markplate-Assessment)<br/>
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=WalterWQ_Markplate-Assessment&metric=bugs&token=aef6e30b916b689a33cc51c6cdb5a4fc4e44c1c8)](https://sonarcloud.io/summary/new_code?id=WalterWQ_Markplate-Assessment)<br/>
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=WalterWQ_Markplate-Assessment&metric=coverage&token=aef6e30b916b689a33cc51c6cdb5a4fc4e44c1c8)](https://sonarcloud.io/summary/new_code?id=WalterWQ_Markplate-Assessment)

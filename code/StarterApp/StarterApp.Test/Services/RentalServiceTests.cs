@@ -120,4 +120,154 @@ public class RentalServiceTests
         // Assert
         Assert.Equal("Approved", rental.Status);
     }
+
+    [Theory]
+    [InlineData("Requested", true)]
+    [InlineData("Approved", false)]
+    [InlineData("Rejected", false)]
+    [InlineData("Returned", false)]
+    [InlineData("Completed", false)]
+    public void CanApproveOrReject_ShouldOnlyBeTrueForRequested(string status, bool expected)
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = status,
+            EndDate = DateTime.Today.AddDays(2)
+        };
+
+        // Act
+        var result = rental.CanApproveOrReject;
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData("Approved", true)]
+    [InlineData("Out for Rent", true)]
+    [InlineData("Requested", false)]
+    [InlineData("Returned", false)]
+    [InlineData("Completed", false)]
+    public void CanMarkReturned_ShouldOnlyBeTrueForApprovedOrOutForRent(string status, bool expected)
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = status,
+            EndDate = DateTime.Today.AddDays(2)
+        };
+
+        // Act
+        var result = rental.CanMarkReturned;
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData("Returned", true)]
+    [InlineData("Requested", false)]
+    [InlineData("Approved", false)]
+    [InlineData("Completed", false)]
+    public void CanComplete_ShouldOnlyBeTrueForReturned(string status, bool expected)
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = status,
+            EndDate = DateTime.Today.AddDays(2)
+        };
+
+        // Act
+        var result = rental.CanComplete;
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void TimeRemaining_WhenRequested_ShouldReturnWaitingForApproval()
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = "Requested",
+            EndDate = DateTime.Today.AddDays(2)
+        };
+
+        // Act
+        var result = rental.TimeRemaining;
+
+        // Assert
+        Assert.Equal("Waiting for approval", result);
+    }
+
+    [Fact]
+    public void TimeRemaining_WhenCompleted_ShouldReturnCompleted()
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = "Completed",
+            EndDate = DateTime.Today.AddDays(2)
+        };
+
+        // Act
+        var result = rental.TimeRemaining;
+
+        // Assert
+        Assert.Equal("Completed", result);
+    }
+
+    [Fact]
+    public void TimeRemaining_WhenEndDateIsToday_ShouldReturnDueToday()
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = "Approved",
+            EndDate = DateTime.Today
+        };
+
+        // Act
+        var result = rental.TimeRemaining;
+
+        // Assert
+        Assert.Equal("Due today", result);
+    }
+
+    [Fact]
+    public void TimeRemaining_WhenEndDateIsPast_ShouldReturnOverdue()
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = "Approved",
+            EndDate = DateTime.Today.AddDays(-1)
+        };
+
+        // Act
+        var result = rental.TimeRemaining;
+
+        // Assert
+        Assert.Equal("Overdue", result);
+    }
+
+    [Fact]
+    public void TimeRemaining_WhenFutureDate_ShouldReturnDaysRemaining()
+    {
+        // Arrange
+        var rental = new Rental
+        {
+            Status = "Approved",
+            EndDate = DateTime.Today.AddDays(3)
+        };
+
+        // Act
+        var result = rental.TimeRemaining;
+
+        // Assert
+        Assert.Equal("3 day(s) remaining", result);
+    }
 }

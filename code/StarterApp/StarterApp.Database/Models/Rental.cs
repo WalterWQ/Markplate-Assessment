@@ -22,5 +22,41 @@ namespace StarterApp.Database.Models
         public DateTime? RequestedAt { get; set; }
         public DateTime? ApprovedAt { get; set; }
 
+        public bool CanApproveOrReject => Status == "Requested";
+
+        public bool CanMarkReturned => Status == "Approved" || Status == "Out for Rent";
+
+        public bool CanComplete => Status == "Returned";
+
+        public string TimeRemaining
+        {
+            get
+            {
+                var now = DateTime.Today;
+
+                if (Status == "Requested")
+                    return "Waiting for approval";
+
+                if (Status == "Rejected")
+                    return "Rejected";
+
+                if (Status == "Completed")
+                    return "Completed";
+
+                if (EndDate.Date < now)
+                    return "Overdue";
+
+                var daysLeft = (EndDate.Date - now).Days;
+
+                if (daysLeft == 0)
+                    return "Due today";
+
+                return $"{daysLeft} day(s) remaining";
+            }
+        }
+
     }
+
+
+
 }

@@ -32,7 +32,6 @@ jobs:
         run: dotnet test ./code/StarterApp/StarterApp.Test/StarterApp.Test.csproj --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v3
         with:
           files: '**/coverage.cobertura.xml'
-          token: ${{ secrets.CODECOV_TOKEN }}

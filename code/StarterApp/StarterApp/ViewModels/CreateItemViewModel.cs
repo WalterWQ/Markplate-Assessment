@@ -18,18 +18,27 @@ public partial class CreateItemViewModel : BaseViewModel
     [ObservableProperty] private double latitude;
     [ObservableProperty] private double longitude;
 
+    /// <summary>
+    /// Initializes a new instance of the CreateItemViewModel class with the API service.
+    /// </summary>
+    /// <param name="apiService">The API service used to perform operations related to item creation.</param>
     public CreateItemViewModel(IApiService apiService)
     {
         _apiService = apiService;
         Title = "Create Item";
     }
 
+    /// <summary>
+    /// Sets the location using the specified latitude and longitude coordinates.
+    /// </summary>
+    /// <param name="latitude">The latitude of the location</param>
+    /// <param name="longitude">The longitude of the location,</param>
+
     public void SetLocation(double latitude, double longitude)
     {
         Latitude = latitude;
         Longitude = longitude;
     }
-
     public class CategoryDto
     {
         public int Id { get; set; }

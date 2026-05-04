@@ -301,6 +301,14 @@ public class ApiService : IApiService, IAuthenticationService
 
     // --- API Json Sync ---
 
+    /// <summary>
+    /// Sends an HTTP request to the specified endpoint with a JSON-serialized request body and deserializes the
+    /// JSON response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request data to be serialized as JSON in the request body.</typeparam>
+    /// <typeparam name="TResponse">The type to which the JSON response will be deserialized.</typeparam>
+    /// <param name="endpoint">The URI of the endpoint to which the request is sent.</param>
+    /// <param name="data">The data to be serialized as JSON and included in the PATCH request body.</param>
     public async Task<TResponse?> PatchAsync<TRequest, TResponse>(string endpoint, TRequest data)
     {
         await PrepareAuthenticatedRequest();

@@ -169,6 +169,9 @@ public partial class ItemDetailViewModel : BaseViewModel
         }
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the current user is the owner of the item.
+    /// </summary>
     public bool IsOwner => Item != null && _authService.CurrentUser != null && Item.OwnerId == _authService.CurrentUser.Id;
 
 }

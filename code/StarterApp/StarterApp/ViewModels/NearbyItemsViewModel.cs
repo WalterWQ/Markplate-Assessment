@@ -23,6 +23,11 @@ public partial class NearbyItemsViewModel : BaseViewModel
     [ObservableProperty]
     private double radiusMiles = 5;
 
+    /// <summary>
+    /// Initializes a new instance of the NearbyItemsViewModel class with the API and location services.
+    /// </summary>
+    /// <param name="apiService">The service used to retrieve data from the API</param>
+    /// <param name="locationService">The service used to obtain the current location</param>
     public NearbyItemsViewModel(IApiService apiService, ILocationService locationService)
     {
         _apiService = apiService;
@@ -97,6 +102,11 @@ public partial class NearbyItemsViewModel : BaseViewModel
         await Shell.Current.GoToAsync($"{nameof(Views.ItemDetailPage)}?itemId={itemId}");
     }
 
+    /// <summary>
+    /// Sets the location
+    /// </summary>
+    /// <param name="latitude">The latitude of the location.</param>
+    /// <param name="longitude">The longitude of the location.</param>
     public void SetLocation(double latitude, double longitude)
     {
         Latitude = latitude;

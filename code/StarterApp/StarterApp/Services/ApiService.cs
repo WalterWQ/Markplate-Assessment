@@ -131,40 +131,6 @@ public class ApiService : IApiService, IAuthenticationService
         await SecureStorage.Default.SetAsync(expiryKey, expiresAt.ToString("O"));  
     }
 
-    private async Task<bool> TryRefreshTokenAsync()
-    {
-        var refreshToken = await GetStoredRefreshTokenAsync();
-
-        if (string.IsNullOrWhiteSpace(refreshToken))
-        {
-            await ClearStoredTokenAsync();
-            return false;
-        }
-        
-        var response = await _httpClient.PostAsJsonAsync("auth/refresh", new { refreshToken });
-
-        if (!response.IsSuccessStatusCode)
-        {
-            await ClearStoredTokenAsync(); 
-            return false;
-        }
-
-        var token = await response.Content.ReadFromJsonAsync<TokenResponse>();
-
-        if (token == null || string.IsNullOrWhiteSpace(token.Token))
-        {
-            await ClearStoredTokenAsync();
-            return false;
-        }
-
-        await SaveTokenAsync(token.Token, token.ExpiresAt);
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", token.Token);
-
-        return true;
-    }
-
     public async Task<string?> GetValidAccessTokenAsync()
     {
         var token = await GetStoredAccessTokenAsync();

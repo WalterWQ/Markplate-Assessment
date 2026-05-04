@@ -1,0 +1,15 @@
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <Exclude>
+            [*]StarterApp.Migrations.*
+            [*]StarterApp.Database.Migrations.*
+            [*]StarterApp.Database.Models.*
+          </Exclude>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

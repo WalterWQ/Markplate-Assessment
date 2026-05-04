@@ -4,112 +4,122 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Rentals">
 
-	<Grid Padding="20" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="12">
+    <Grid Padding="20" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="12">
 
-		<Label Grid.Row="0"
+        <Label Grid.Row="0"
                Text="Rentals"
                FontSize="24"
                FontAttributes="Bold" />
 
-		<Button Grid.Row="1"
+        <Button Grid.Row="1"
                 Text="Refresh"
                 Command="{Binding LoadRentalsCommand}" />
 
-		<Label Grid.Row="2"
+        <Label Grid.Row="2"
                Text="{Binding ErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding HasError}" />
 
-		<ScrollView Grid.Row="3">
-			<VerticalStackLayout Spacing="20">
+        <ScrollView Grid.Row="3">
+            <VerticalStackLayout Spacing="20">
 
-				<!-- RENTAL REQUEST FORM -->
-				<Border Padding="12" Margin="0,0,0,10">
-					<VerticalStackLayout Spacing="8">
+                <!-- RENTAL REQUEST FORM -->
+                <Border Padding="12" Margin="0,0,0,10">
+                    <VerticalStackLayout Spacing="8">
 
-						<Label Text="Request Rental"
+                        <Label Text="Request Rental"
                                FontSize="20"
                                FontAttributes="Bold" />
 
-						<Label Text="{Binding ItemTitle, StringFormat='Item: {0}'}" />
+                        <Label Text="{Binding ItemTitle, StringFormat='Item: {0}'}" />
+                        <Label Text="{Binding DailyRate, StringFormat='Daily rate: £{0:F2}'}" />
 
-						<Label Text="{Binding DailyRate, StringFormat='Daily rate: £{0:F2}'}" />
+                        <Label Text="Start Date" />
+                        <DatePicker Date="{Binding StartDate}" />
 
-						<Label Text="Start Date" />
-						<DatePicker Date="{Binding StartDate}" />
+                        <Label Text="End Date" />
+                        <DatePicker Date="{Binding EndDate}" />
 
-						<Label Text="End Date" />
-						<DatePicker Date="{Binding EndDate}" />
-
-						<Label Text="{Binding EstimatedTotal, StringFormat='Estimated total: £{0:F2}'}"
+                        <Label Text="{Binding EstimatedTotal, StringFormat='Estimated total: £{0:F2}'}"
                                FontAttributes="Bold" />
 
-						<Button Text="Submit Rental Request"
+                        <Button Text="Submit Rental Request"
                                 Command="{Binding RequestRentalCommand}" />
 
-					</VerticalStackLayout>
-				</Border>
+                    </VerticalStackLayout>
+                </Border>
 
-				<!-- INCOMING -->
-				<Label Text="Incoming Requests"
+                <!-- INCOMING -->
+                <Label Text="Incoming Requests"
                        FontSize="20"
                        FontAttributes="Bold" />
 
-				<CollectionView ItemsSource="{Binding IncomingRentals}">
-					<CollectionView.ItemTemplate>
-						<DataTemplate>
-							<Border Padding="12" Margin="0,6">
-								<VerticalStackLayout Spacing="5">
-									<Label Text="{Binding ItemTitle}" FontAttributes="Bold" />
-									<Label Text="{Binding BorrowerName, StringFormat='Borrower: {0}'}" />
-									<Label Text="{Binding Status, StringFormat='Status: {0}'}" />
-									<Label Text="{Binding TotalPrice, StringFormat='Total: £{0:F2}'}" />
+                <CollectionView ItemsSource="{Binding IncomingRentals}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="12" Margin="0,6">
+                                <VerticalStackLayout Spacing="5">
 
-									<HorizontalStackLayout Spacing="8">
-										<Button Text="Approve"
+                                    <Label Text="{Binding ItemTitle}" FontAttributes="Bold" />
+                                    <Label Text="{Binding BorrowerName, StringFormat='Borrower: {0}'}" />
+                                    <Label Text="{Binding Status, StringFormat='Status: {0}'}" />
+                                    <Label Text="{Binding TotalPrice, StringFormat='Total: £{0:F2}'}" />
+                                    <Label Text="{Binding TimeRemaining}"
+                                           FontAttributes="Bold" />
+
+                                    <HorizontalStackLayout Spacing="8"
+                                                           IsVisible="{Binding CanApproveOrReject}">
+                                        <Button Text="Approve"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ApproveRentalCommand}"
                                                 CommandParameter="{Binding Id}" />
 
-										<Button Text="Reject"
+                                        <Button Text="Reject"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RejectRentalCommand}"
                                                 CommandParameter="{Binding Id}" />
+                                    </HorizontalStackLayout>
 
-										<Button Text="Complete"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CompleteRentalCommand}"
-                                                CommandParameter="{Binding Id}" />
-									</HorizontalStackLayout>
-								</VerticalStackLayout>
-							</Border>
-						</DataTemplate>
-					</CollectionView.ItemTemplate>
-				</CollectionView>
+                                    <Button Text="Complete"
+                                            IsVisible="{Binding CanComplete}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CompleteRentalCommand}"
+                                            CommandParameter="{Binding Id}" />
 
-				<!-- OUTGOING -->
-				<Label Text="Outgoing Requests"
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- OUTGOING -->
+                <Label Text="Outgoing Requests"
                        FontSize="20"
                        FontAttributes="Bold" />
 
-				<CollectionView ItemsSource="{Binding OutgoingRentals}">
-					<CollectionView.ItemTemplate>
-						<DataTemplate>
-							<Border Padding="12" Margin="0,6">
-								<VerticalStackLayout Spacing="5">
-									<Label Text="{Binding ItemTitle}" FontAttributes="Bold" />
-									<Label Text="{Binding OwnerName, StringFormat='Owner: {0}'}" />
-									<Label Text="{Binding Status, StringFormat='Status: {0}'}" />
-									<Label Text="{Binding TotalPrice, StringFormat='Total: £{0:F2}'}" />
+                <CollectionView ItemsSource="{Binding OutgoingRentals}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="12" Margin="0,6">
+                                <VerticalStackLayout Spacing="5">
 
-									<Button Text="Mark Returned"
+                                    <Label Text="{Binding ItemTitle}" FontAttributes="Bold" />
+                                    <Label Text="{Binding OwnerName, StringFormat='Owner: {0}'}" />
+                                    <Label Text="{Binding Status, StringFormat='Status: {0}'}" />
+                                    <Label Text="{Binding TotalPrice, StringFormat='Total: £{0:F2}'}" />
+                                    <Label Text="{Binding TimeRemaining}"
+                                           FontAttributes="Bold" />
+
+                                    <Button Text="Mark Returned"
+                                            IsVisible="{Binding CanMarkReturned}"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.MarkReturnedCommand}"
                                             CommandParameter="{Binding Id}" />
-								</VerticalStackLayout>
-							</Border>
-						</DataTemplate>
-					</CollectionView.ItemTemplate>
-				</CollectionView>
 
-			</VerticalStackLayout>
-		</ScrollView>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-	</Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
 </ContentPage>
